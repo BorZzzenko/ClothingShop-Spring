@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -16,10 +17,19 @@ public class ClothesController {
 
     @GetMapping("/")
     public String clothesList(Model model) {
-        List<Clothes> clothes = clothesService.findAll();
+        List<Clothes> clothesList = clothesService.findAll();
+
+        model.addAttribute("clothes", clothesList);
+
+        return "index";
+    }
+
+    @GetMapping("/product/{id}")
+    public String clothesInfo(Model model, @PathVariable("id") Long id) {
+        Clothes clothes = clothesService.findById(id);
 
         model.addAttribute("clothes", clothes);
 
-        return "index";
+        return "product";
     }
 }

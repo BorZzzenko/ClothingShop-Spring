@@ -13,7 +13,7 @@ public class ClothesService {
     private ClothesRepository repository;
 
     public Clothes findById(Long id) {
-        return repository.getOne(id);
+        return repository.findById(id).orElse(null);
     }
 
     public List<Clothes> findAll() {
