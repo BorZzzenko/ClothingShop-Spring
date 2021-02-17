@@ -16,6 +16,10 @@ public class ClothesService {
         return repository.findById(id).orElse(null);
     }
 
+    public void saveClothes(Clothes clothes) {
+        repository.save(clothes);
+    }
+
     public List<Clothes> findAll() {
         return repository.findAll();
     }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<div th:replace="/fragments/head :: head"></div>
+
+<body>
+<div th:replace="/fragments/header :: header"></div>
+
+<main>
+    <div class="container py-4">
+        <form action="#" th:action="@{/product/create}" th:object="${clothes}" method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Название</label>
+                <input type="text" class="form-control" th:field="*{name}" id="name" placeholder="Футболка Itachi" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="categorySelect" class= "form-label">Категория</label>
+                <select class="form-select" th:field="*{category}"  id="categorySelect">
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="colorSelect" class= "form-label">Цвет</label>
+                <select class="form-select" th:field="*{color}" id="colorSelect">
+                    <option th:each="color : ${colors}" th:value="${color.id}" th:text="${color.name}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="costInput" class="form-label">Цена</label>
+                <input type="text" class="form-control" th:field="*{price}" id="costInput" placeholder="1000 р." required>
+            </div>
+
+            <div class="mb-3">
+                <label for="sizeInput" class="form-label">Размеры</label>
+                <input type="text" class="form-control" th:field="*{sizes}" id="sizeInput" placeholder="M, L" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="controlDescriptionTextArea">Описание</label>
+                <textarea class="form-control" th:field="*{description}" id="controlDescriptionTextArea" rows="5" placeholder="Футболка прямого кроя, выполненная из синтетической ткани, приятной на ощупь."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="imageFile" class="form-label">Фото</label>
+                <input class="form-control" th:field="*{imagePath}" type="file" id="imageFile">
+            </div>
+
+            <div class="pt-3">
+                <button type="submit" class="btn btn-dark">Ok</button>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>

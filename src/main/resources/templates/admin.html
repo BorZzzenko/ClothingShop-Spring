@@ -12,7 +12,7 @@
                 <h2 class="fw-light">Каталог товаров</h2>
             </div>
             <div class="pb-3">
-                <a href="update_product" class="btn btn-dark">Добавить</a>
+                <a th:href="@{/product/create}" class="btn btn-dark">Добавить</a>
             </div>
         </section>
 
@@ -33,7 +33,7 @@
                                         <a href="update_product" class="btn btn-sm btn-outline-dark">Изменить</a>
                                         <a href="" class="btn btn-sm btn-outline-danger ms-1">Удалить</a>
                                     </div>
-                                    <small class="fw-bold" th:text="${item.price}"></small>
+                                    <small class="fw-bold" th:inline="text">[[${item.price}]] р.</small>
                                 </div>
                             </div>
                         </div>

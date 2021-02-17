@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "clothes")
 public class Clothes {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PK_Clothes")
     private Long id;
 
@@ -59,8 +59,8 @@ public class Clothes {
         return description;
     }
 
-    public String getPrice() {
-        return price.toString() + " р.";
+    public Double getPrice() {
+        return price;
     }
 
     public String getImagePath() {
@@ -77,6 +77,38 @@ public class Clothes {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setSizes(String sizes) {
+        this.sizes = sizes;
+    }
+
+    public void setCategory(ClothesCategory category) {
+        this.category = category;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override
