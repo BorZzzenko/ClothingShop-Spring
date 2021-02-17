@@ -32,4 +32,13 @@ public class ClothesController {
 
         return "product";
     }
+
+    @GetMapping("/admin")
+    public String clothesListAdmin(Model model) {
+        List<Clothes> clothesList = clothesService.findAll();
+
+        model.addAttribute("clothes", clothesList);
+
+        return "admin";
+    }
 }
