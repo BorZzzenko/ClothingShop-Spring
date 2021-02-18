@@ -76,4 +76,11 @@ public class ClothesController {
 
         return "redirect:/admin";
     }
+
+    @PostMapping("/product/delete/{id}")
+    public String deleteClothes(Model model, @PathVariable("id") Long id) {
+        clothesService.deleteClothesById(id);
+        return "redirect:/admin";
+    }
+
 }

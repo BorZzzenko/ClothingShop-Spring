@@ -20,6 +20,10 @@ public class ClothesService {
         repository.save(clothes);
     }
 
+    public void deleteClothesById(Long id) {
+        repository.deleteById(id);
+    }
+
     public List<Clothes> findAll() {
         return repository.findAll();
     }
