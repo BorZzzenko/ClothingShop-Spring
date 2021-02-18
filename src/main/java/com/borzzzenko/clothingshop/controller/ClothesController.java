@@ -67,7 +67,7 @@ public class ClothesController {
     }
 
     @PostMapping("/product/create")
-    public String createClothesForm(Clothes clothes) {
+    public String createClothes(Clothes clothes) {
         String path = clothes.getImagePath();
         path = "/img/" + path;
         clothes.setImagePath(path);
@@ -83,4 +83,30 @@ public class ClothesController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/product/update/{id}")
+    public String updateClothesForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("metaTitle", "Изменение информации об одежде");
+
+        Clothes clothes = clothesService.findById(id);
+        model.addAttribute("clothes", clothes);
+
+        List<Color> colors = colorService.findAll();
+        model.addAttribute("colors", colors);
+
+        List<ClothesCategory> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+
+        return "update_product";
+    }
+
+    @PostMapping("/product/update")
+    public String updateClothes(Clothes clothes) {
+        String path = clothes.getImagePath();
+        path = "/img/" + path;
+        clothes.setImagePath(path);
+
+        clothesService.saveClothes(clothes);
+
+        return "redirect:/admin";
+    }
 }
