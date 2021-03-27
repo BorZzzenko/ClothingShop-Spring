@@ -27,4 +27,12 @@ public class ClothesService {
     public List<Clothes> findAll() {
         return repository.findAll();
     }
+
+    public Clothes findByName(String clothesName) {
+        return repository.findByName(clothesName);
+    }
+
+    public boolean existsByName(String name) {
+        return repository.existsClothesByName(name);
+    }
 }
