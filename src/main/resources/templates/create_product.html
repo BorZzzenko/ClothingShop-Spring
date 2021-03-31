@@ -8,7 +8,7 @@
 
 <main>
     <div class="container py-4">
-        <form action="#" th:action="@{/product/create}" th:object="${clothes}" method="post">
+        <form action="#" th:action="@{/product/create}" th:object="${clothes}" enctype="multipart/form-data" method="post">
             <div class="mb-3">
                 <label for="name" class="form-label">Название</label>
                 <input type="text" class="form-control" th:field="*{name}" id="name" placeholder="Футболка Itachi" required>
@@ -45,7 +45,7 @@
 
             <div class="mb-3">
                 <label for="imageFile" class="form-label">Фото</label>
-                <input class="form-control" th:field="*{imagePath}" type="file" id="imageFile">
+                <input class="form-control" type="file" name="image" id="imageFile">
             </div>
 
             <div class="pt-3">

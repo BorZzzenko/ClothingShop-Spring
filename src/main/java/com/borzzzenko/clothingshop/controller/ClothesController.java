@@ -9,11 +9,16 @@ import com.borzzzenko.clothingshop.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class ClothesController {
@@ -67,11 +72,13 @@ public class ClothesController {
     }
 
     @PostMapping("/product/create")
-    public String createClothes(Clothes clothes) {
-        String path = clothes.getImagePath();
-        path = "/img/" + path;
-        clothes.setImagePath(path);
+    public String createClothes(Clothes clothes, @RequestParam("image") MultipartFile image) throws IOException {
+        String path = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
+        if (!path.equals(""))
+            FileUploadUtil.saveFile(path, image);
+
+        clothes.setImagePath(path);
         clothesService.saveClothes(clothes);
 
         return "redirect:/admin";
@@ -100,11 +107,13 @@ public class ClothesController {
     }
 
     @PostMapping("/product/update")
-    public String updateClothes(Clothes clothes) {
-        String path = clothes.getImagePath();
-        path = "/img/" + path;
-        clothes.setImagePath(path);
+    public String updateClothes(Clothes clothes, @RequestParam("image") MultipartFile image) throws IOException {
+        String path = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
+        if (!path.equals(""))
+            FileUploadUtil.saveFile(path, image);
+
+        clothes.setImagePath(path);
         clothesService.saveClothes(clothes);
 
         return "redirect:/admin";
