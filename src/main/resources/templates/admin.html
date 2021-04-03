@@ -24,7 +24,7 @@
 
                     <div class="col" th:each="item: ${clothes}">
                         <div class="card shadow-sm">
-                            <img th:src="@{/img/{name}(name=${item.imagePath})}" class="card-img-top" alt="" width="100%" height="100%">
+                            <img th:src="@{/media/{name}(name=${item.imagePath})}" class="card-img-top" alt="" width="100%" height="100%">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold" th:text="${item.name}"></h5>
                                 <p class="card-text" th:text="${item.description}"></p>

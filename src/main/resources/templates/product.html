@@ -11,7 +11,7 @@
             <h3 class="fw-bold pb-3 text-center" th:text="${clothes.name}"></h3>
             <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-2">
                 <div class="col">
-                    <img th:src="@{/img/{name}(name=${clothes.imagePath})}" alt="" width="100%" height="100%">
+                    <img th:src="@{/media/{name}(name=${clothes.imagePath})}" alt="" width="100%" height="100%">
                 </div>
                 <div class="col py-4 ps-lg-5">
                     <p class="py-1" th:inline="text">
