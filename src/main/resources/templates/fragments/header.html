@@ -14,8 +14,10 @@
                     <a class="nav-item nav-link active" aria-current="page" href="/">Каталог</a>
                 </div>
                 <div class="navbar-nav ms-auto">
-                    <a href="#" class="nav-item nav-link">Вход</a>
-                    <a href="#" class="nav-item nav-link">Регистрация</a>
+                    <a href="#" class="nav-item nav-link">[[${#authentication.getPrincipal().getUsername()}]]</a>
+                    <form action="/auth/logout" method="POST">
+                        <button class="btn btn-link btn-lg nav-item nav-link" type="submit">Выход</button>
+                    </form>
                 </div>
             </div>
         </div>

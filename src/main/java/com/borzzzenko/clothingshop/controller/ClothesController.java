@@ -1,12 +1,13 @@
 package com.borzzzenko.clothingshop.controller;
 
-import com.borzzzenko.clothingshop.model.Clothes;
-import com.borzzzenko.clothingshop.model.ClothesCategory;
-import com.borzzzenko.clothingshop.model.Color;
+import com.borzzzenko.clothingshop.model.*;
 import com.borzzzenko.clothingshop.service.ClothesCategoryService;
 import com.borzzzenko.clothingshop.service.ClothesService;
 import com.borzzzenko.clothingshop.service.ColorService;
+import com.borzzzenko.clothingshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +33,24 @@ public class ClothesController {
     @Autowired
     private ClothesCategoryService categoryService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('read')")
+    public String startPageRedirection(Model model, Principal principal) {
+        String currentUserEmail = principal.getName();
+        User currentUser = userService.findByUserName(currentUserEmail).orElseThrow(() ->
+                new UsernameNotFoundException("User doesn't exists"));
+
+        if (currentUser.getRole().equals(Role.ADMIN))
+            return "redirect:/admin";
+
+        return "redirect:/catalog";
+    }
+
+    @GetMapping("/catalog")
+    @PreAuthorize("hasAuthority('read')")
     public String clothesList(Model model) {
         List<Clothes> clothesList = clothesService.findAll();
 
@@ -41,6 +60,7 @@ public class ClothesController {
     }
 
     @GetMapping("/product/{id}")
+    @PreAuthorize("hasAuthority('read')")
     public String clothesInfo(Model model, @PathVariable("id") Long id) {
         Clothes clothes = clothesService.findById(id);
 
@@ -50,6 +70,7 @@ public class ClothesController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasAuthority('write')")
     public String clothesListAdmin(Model model) {
         List<Clothes> clothesList = clothesService.findAll();
 
@@ -59,6 +80,7 @@ public class ClothesController {
     }
 
     @GetMapping("/product/create")
+    @PreAuthorize("hasAuthority('write')")
     public String createClothesForm(Clothes clothes, Model model) {
         model.addAttribute("metaTitle", "Добавление одежды");
 
@@ -72,6 +94,7 @@ public class ClothesController {
     }
 
     @PostMapping("/product/create")
+    @PreAuthorize("hasAuthority('write')")
     public String createClothes(Clothes clothes, @RequestParam("image") MultipartFile image) throws IOException {
         String path = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
@@ -85,12 +108,14 @@ public class ClothesController {
     }
 
     @PostMapping("/product/delete/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public String deleteClothes(Model model, @PathVariable("id") Long id) {
         clothesService.deleteClothesById(id);
         return "redirect:/admin";
     }
 
     @GetMapping("/product/update/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public String updateClothesForm(@PathVariable("id") Long id, Model model) {
         model.addAttribute("metaTitle", "Изменение информации об одежде");
 
@@ -107,6 +132,7 @@ public class ClothesController {
     }
 
     @PostMapping("/product/update")
+    @PreAuthorize("hasAuthority('write')")
     public String updateClothes(Clothes clothes, @RequestParam("image") MultipartFile image) throws IOException {
         String path = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
