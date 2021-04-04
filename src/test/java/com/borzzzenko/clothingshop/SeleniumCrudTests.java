@@ -39,13 +39,25 @@ class SeleniumCrudTests {
 	void goToAdmin(){
 		// Go to admin page
 		driver.navigate().to("http://localhost:" + port + "/admin");
-
-		int beforeClothesCount = driver.findElements(By.xpath("//div/div/h5")).size();
-
 	}
 
 	@Test
 	@Order(1)
+	void login() {
+		String login = "admin";
+		String password = "admin";
+
+		driver.findElement(By.id("username")).click();
+		driver.findElement(By.id("username")).sendKeys(login);
+		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
+
+		String loggedInUserName = driver.findElement(By.cssSelector(".ms-auto > .nav-item")).getText();
+		Assertions.assertEquals(login, loggedInUserName);
+	}
+
+	@Test
+	@Order(2)
 	void creatingClothes() {
 		int beforeCreatingClothesCount = driver.findElements(By.xpath("//div/div/h5")).size();
 
@@ -78,7 +90,7 @@ class SeleniumCrudTests {
 	}
 
 	@Test
-	@Order(2)
+	@Order(3)
 	void updateClothes() {
 		int ClothesCount = driver.findElements(By.xpath("//div/div/h5")).size();
 
@@ -115,7 +127,7 @@ class SeleniumCrudTests {
 	}
 
 	@Test
-	@Order(3)
+	@Order(4)
 	void deletionClothes() {
 		int beforeDeletionClothesCount = driver.findElements(By.xpath("//div/div/h5")).size();
 
