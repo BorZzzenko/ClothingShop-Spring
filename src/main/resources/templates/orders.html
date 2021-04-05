@@ -37,7 +37,7 @@
                             </p>
                             <p class="py-1" th:inline="text">
                                 <strong>Дата заказа:</strong>
-                                [[${#dates.format(item.date, 'dd/MM/yyyy HH:mm')}]]
+                                [[${#dates.format(item.date, 'dd/MM/yyyy')}]]
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <a th:href="@{/product/{id}(id=${item.clothes.id})}" class="btn btn-sm btn-outline-dark">Подробнее</a>
