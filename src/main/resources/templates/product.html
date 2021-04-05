@@ -34,7 +34,48 @@
                         <strong>Описание:</strong>
                         [[${clothes.description}]]
                     </p>
-                    <a href="" class="btn btn-dark py-1 btn-lg">Заказать</a>
+                    <button class="btn btn-dark py-1 btn-lg"
+                            data-bs-toggle="modal"
+                            data-bs-target="#Modal">Заказать</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- make order modal -->
+        <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Заказ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/orders/create}" th:object="${order}" method="post">
+                        <div class="modal-body">
+                            <label for="name"><strong>Название:</strong></label>
+                            <p id="name" class="py-1">[[${clothes.name}]]</p>
+
+                            <label for="color"><strong>Цвет:</strong></label>
+                            <p id="color" class="py-1">[[${clothes.color.name}]]</p>
+
+                            <label for="price"><strong>Цена:</strong></label>
+                            <p id="price" class="py-1">[[${clothes.price}]]</p>
+
+                            <label for="sizeInput" class="form-label"><strong>Размер:</strong></label>
+                            <input type="text" class="form-control py-1" th:field="*{size}" id="sizeInput" placeholder="M" required>
+
+                            <label for="countInput" class="form-label"><strong>Количество:</strong></label>
+                            <input type="number" class="form-control py-1" th:field="*{count}" id="countInput" placeholder="1" required>
+
+                            <select class="form-select hidden-select" th:field="*{clothes}">
+                                <option th:value="${clothes.id}"></option>
+                            </select>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="submitButton" class="btn-sm btn-dark">Заказать</button>
+                            <button type="button" class="btn-sm btn-outline-dark" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,10 +1,7 @@
 package com.borzzzenko.clothingshop.controller;
 
 import com.borzzzenko.clothingshop.model.*;
-import com.borzzzenko.clothingshop.service.ClothesCategoryService;
-import com.borzzzenko.clothingshop.service.ClothesService;
-import com.borzzzenko.clothingshop.service.ColorService;
-import com.borzzzenko.clothingshop.service.UserService;
+import com.borzzzenko.clothingshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +33,9 @@ public class ClothesController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/")
     @PreAuthorize("hasAuthority('read')")
@@ -61,9 +62,8 @@ public class ClothesController {
 
     @GetMapping("/product/{id}")
     @PreAuthorize("hasAuthority('read')")
-    public String clothesInfo(Model model, @PathVariable("id") Long id) {
+    public String clothesInfo(Model model, Order order, @PathVariable("id") Long id) {
         Clothes clothes = clothesService.findById(id);
-
         model.addAttribute("clothes", clothes);
 
         return "product";
@@ -84,6 +84,21 @@ public class ClothesController {
         model.addAttribute("orders", orders);
 
         return "orders";
+    }
+
+    @PostMapping("/orders/create")
+    @PreAuthorize("hasAuthority('read')")
+    public String makeOrder(Order order, Principal principal) {
+        String currentUserName = principal.getName();
+        User currentUser = userService.findByUserName(currentUserName).orElseThrow(() ->
+                new UsernameNotFoundException("User doesn't exists"));
+
+        order.setOwner(currentUser);
+        order.setDate(new Date());
+
+        orderService.saveOrder(order);
+
+        return "redirect:/orders";
     }
 
     @GetMapping("/admin")

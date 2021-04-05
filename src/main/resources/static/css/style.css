@@ -49,3 +49,9 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/* hidden select on orders creation form
+-------------------------------------------------- */
+.hidden-select {
+  visibility: hidden;
+}
