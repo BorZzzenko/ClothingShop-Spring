@@ -1,6 +1,7 @@
 package com.borzzzenko.clothingshop.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -26,13 +27,18 @@ public class User {
     @Column(name = "Role")
     private Role role;
 
-    public User(Long id, String userName, String password, String firstName, String lastName, Role role) {
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "PK_User")
+    private List<Order> orders;
+
+    public User(Long id, String userName, String password, String firstName, String lastName, Role role, List<Order> orders) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+        this.orders = orders;
     }
 
     public User() { }
@@ -87,6 +93,14 @@ public class User {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

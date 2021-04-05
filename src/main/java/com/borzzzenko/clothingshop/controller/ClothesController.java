@@ -39,8 +39,8 @@ public class ClothesController {
     @GetMapping("/")
     @PreAuthorize("hasAuthority('read')")
     public String startPageRedirection(Model model, Principal principal) {
-        String currentUserEmail = principal.getName();
-        User currentUser = userService.findByUserName(currentUserEmail).orElseThrow(() ->
+        String currentUserName = principal.getName();
+        User currentUser = userService.findByUserName(currentUserName).orElseThrow(() ->
                 new UsernameNotFoundException("User doesn't exists"));
 
         if (currentUser.getRole().equals(Role.ADMIN))
@@ -67,6 +67,23 @@ public class ClothesController {
         model.addAttribute("clothes", clothes);
 
         return "product";
+    }
+
+    @GetMapping("/orders")
+    @PreAuthorize("hasAuthority('read')")
+    public String ordersList(Model model, Principal principal) {
+        String currentUserName = principal.getName();
+        User currentUser = userService.findByUserName(currentUserName).orElseThrow(() ->
+                new UsernameNotFoundException("User doesn't exists"));
+
+        List<Order> orders = currentUser.getOrders();
+
+        if (orders.size() == 0)
+            orders = null;
+
+        model.addAttribute("orders", orders);
+
+        return "orders";
     }
 
     @GetMapping("/admin")
