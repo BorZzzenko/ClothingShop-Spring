@@ -1,2 +1,2 @@
-# ClothingShop-Spring
-Simple crud app using Spring Boot
+# ClothingShop
+Clothing shop web app using Spring Boot
