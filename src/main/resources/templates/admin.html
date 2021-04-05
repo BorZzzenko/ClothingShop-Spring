@@ -17,7 +17,9 @@
         </section>
 
         <div class="album pb-5" th:switch="${clothes}">
-            <h2 th:case="null">Каталог пуст...</h2>
+            <div th:case="null" class="container">
+                <h5 class="py-3" >Каталог пуст...</h5>
+            </div>
 
             <div th:case="*" class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
