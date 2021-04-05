@@ -1,7 +1,11 @@
 package com.borzzzenko.clothingshop;
 
+import com.borzzzenko.clothingshop.config.SecurityConfig;
 import com.borzzzenko.clothingshop.model.Clothes;
+import com.borzzzenko.clothingshop.model.Role;
+import com.borzzzenko.clothingshop.model.User;
 import com.borzzzenko.clothingshop.service.ClothesService;
+import com.borzzzenko.clothingshop.service.UserService;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -12,8 +16,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SeleniumCrudTests {
 	@LocalServerPort
@@ -24,15 +30,37 @@ class SeleniumCrudTests {
 	@Autowired
 	private ClothesService clothesService;
 
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private PasswordEncoder encoder;
+
+	private final String testLogin = "testAdmin";
+	private final String testPassword = "testAdmin";
+
 	@BeforeAll
-	static void setUp() {
+	void setUp() {
+		// Setup WebDriver
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
+
+		// Setup test user
+		User testUser = new User();
+		testUser.setUserName(testLogin);
+		testUser.setPassword(encoder.encode(testPassword));
+		testUser.setRole(Role.ADMIN);
+
+		userService.save(testUser);
 	}
 
 	@AfterAll
-	static void tearDown() {
+	void tearDown() {
+		// close driver
 		driver.quit();
+
+		// delete test user
+		userService.deleteByUserName(testLogin);
 	}
 
 	@BeforeEach
@@ -44,16 +72,13 @@ class SeleniumCrudTests {
 	@Test
 	@Order(1)
 	void login() {
-		String login = "admin";
-		String password = "admin";
-
 		driver.findElement(By.id("username")).click();
-		driver.findElement(By.id("username")).sendKeys(login);
-		driver.findElement(By.id("password")).sendKeys(password);
+		driver.findElement(By.id("username")).sendKeys(testLogin);
+		driver.findElement(By.id("password")).sendKeys(testPassword);
 		driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 
 		String loggedInUserName = driver.findElement(By.cssSelector(".ms-auto > .nav-item")).getText();
-		Assertions.assertEquals(login, loggedInUserName);
+		Assertions.assertEquals(testLogin, loggedInUserName);
 	}
 
 	@Test

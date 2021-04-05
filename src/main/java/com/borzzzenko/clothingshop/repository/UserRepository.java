@@ -1,6 +1,5 @@
 package com.borzzzenko.clothingshop.repository;
 
-import com.borzzzenko.clothingshop.model.ClothesCategory;
 import com.borzzzenko.clothingshop.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
